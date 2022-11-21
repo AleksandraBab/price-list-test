@@ -1,0 +1,27 @@
+<ng-container *ngIf="priceLists$ | async as priceLists">
+  <ng-container *ngIf="priceLists.length > 0; else empty">
+    <input placeholder="Enter search term" name="search"
+      [(ngModel)]="serchTerm" (ngModelChange)="onSearchTermChange($event)"/>
+    <ul class="list">
+      <li class="item">
+        <p class="item__text item__text_heading">Price ID</p>
+        <p class="item__text item__text_heading">Name</p>
+        <p class="item__text item__text_heading">Extra ID</p>
+      </li>
+
+      <li *ngFor="let item of priceLists" class="item" (click)="onItemClick(item.priceListID)">
+        <p class="item__text">{{item.priceListID}}</p>
+        <p class="item__text">{{item.priceListName}}</p>
+        <p class="item__text">{{item.extErpPriceListID}}</p>
+      </li>
+    </ul>
+  </ng-container>
+</ng-container>
+
+<ng-template #empty>
+  <p>Nothing was found</p>
+</ng-template>
+
+<ng-container *ngIf="isError$ | async">
+  <p>Something went wrong. Please try again later</p>
+</ng-container>

@@ -1,0 +1,62 @@
+<ng-container *ngIf="priceList$ | async as priceList; else error">
+  <div class="container" [formGroup]="listForm">
+    <div class="item">
+      <div class="item__form">
+        <p class="item__text item__text_heading">Price ID</p>
+        <p class="item__text">{{priceList.priceListID}}</p>
+      </div>
+    </div>
+    <div class="item">
+      <p class="item__text item__text_heading">Name</p>
+      <div class="item__form">
+        <p class="item__text" *ngIf="!isNameEditabel">{{priceList.priceListName}}</p>
+        <input class="item__input" *ngIf="isNameEditabel"
+          placeholder="enter name" name="listName" formControlName="listName"
+        >
+        <button class="item__btn" *ngIf="isNameEditabel" type="button" 
+        (click)="saveName(priceList)" [ngClass]="{'item__btn_disabled': listForm.controls['listName'].invalid}"
+        [disabled]="listForm.controls['listName'].invalid"
+        >save</button>
+        <button type="button" class="item__btn" (click)="editName()">{{!isNameEditabel ? 'edit' : 'cansel'}}</button>
+      </div>
+    </div>
+    <div class="item">
+      <p class="item__text item__text_heading">Extra ID</p>
+      <div class="item__form">
+        <p class="item__text" *ngIf="!isIdEditabel">{{priceList.extErpPriceListID}}</p>
+        <input class="item__input" *ngIf="isIdEditabel"
+          placeholder="enter id" name="listId" formControlName="listId"
+        >
+        <button class="item__btn" *ngIf="isIdEditabel" type="button"
+        (click)="saveId(priceList)" [ngClass]="{'item__btn_disabled': listForm.controls['listId'].invalid}"
+        [disabled]="listForm.controls['listId'].invalid"
+        >save</button>
+        <button type="button" class="item__btn" (click)="editId()">{{!isIdEditabel ? 'edit' : 'cansel'}}</button>
+      </div>
+    </div>
+    <div class="alert"
+      *ngIf="isNameEditabel && listForm.controls['listName'].invalid && listForm.controls['listName'].dirty"
+      >
+      Name should contain only letters and at least 10 chars
+    </div>
+    <div class="alert"
+      *ngIf="isIdEditabel && listForm.controls['listId'].invalid && listForm.controls['listId'].dirty"
+      >
+      Id should be unique and contain only numbers.
+    </div>
+  </div>
+
+  <ng-container *ngIf="nameError">
+    <p class="alert">Something went wrong by saving name. Please try again later</p>
+  </ng-container>
+
+  <ng-container *ngIf="idError">
+    <p class="alert">Something went wrong by saving id. Please try again later</p>
+  </ng-container>
+</ng-container>
+
+<ng-template #error>
+  <p>Something went wrong by data uploading. Please try again later</p>
+</ng-template>
+
+
